@@ -3,7 +3,7 @@ namespace SpriteKind {
     export const gun = SpriteKind.create()
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (loaded < 0) {
+    if (loaded > 0) {
         projectile = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . 4 4 4 4 . . . . . . 
