@@ -22,7 +22,27 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . 4 4 2 2 2 2 4 4 . . . . 
             . . . . . . 4 4 4 4 . . . . . . 
             . . . . . . . . . . . . . . . . 
-            `, Sebastian, 100, 0)
+            `, Sebastian, direction * 100, 0)
+        loaded += -1
+    } else {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . 4 4 4 4 . . . . . . 
+            . . . . 4 4 4 5 5 4 4 4 . . . . 
+            . . . 3 3 3 3 4 4 4 4 4 4 . . . 
+            . . 4 3 3 3 3 2 2 2 1 1 4 4 . . 
+            . . 3 3 3 3 3 2 2 2 1 1 5 4 . . 
+            . 4 3 3 3 3 2 2 2 2 2 5 5 4 4 . 
+            . 4 3 3 3 2 2 2 4 4 4 4 5 4 4 . 
+            . 4 4 3 3 2 2 4 4 4 4 4 4 4 4 . 
+            . 4 2 3 3 2 2 4 4 4 4 4 4 4 4 . 
+            . . 4 2 3 3 2 4 4 3 4 4 2 4 . . 
+            . . 4 2 2 3 2 2 4 3 4 2 4 4 . . 
+            . . . 4 2 2 2 2 2 2 2 2 4 . . . 
+            . . . . 4 4 2 2 2 2 4 4 . . . . 
+            . . . . . . 4 4 4 4 . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Sebastian, 0, 100)
         loaded += -1
     }
 })
@@ -156,6 +176,9 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.buttonOrange, function (s
     make_tilmap(level)
     tiles.placeOnRandomTile(Sebastian, myTiles.tile1)
 })
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy(effects.disintegrate, 500)
+})
 // destroy enemy and making chest and fire-ball
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (sprite.y < otherSprite.top) {
@@ -205,6 +228,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 // starting the game
 let chest: Sprite = null
 let fireball: Sprite = null
+let direction = 0
 let projectile: Sprite = null
 let loaded = 0
 let bat: Sprite = null
@@ -295,6 +319,7 @@ game.onUpdate(function () {
             . . . . . f f f f f f . . . . . 
             . . . . . . f f f . . . . . . . 
             `)
+        direction = 1
     } else if (controller.left.isPressed()) {
         Sebastian.setImage(img`
             . . . . . f f f f f f . . . . . 
@@ -314,6 +339,7 @@ game.onUpdate(function () {
             . . . . . f f f f f f . . . . . 
             . . . . . . . f f f . . . . . . 
             `)
+        direction = -1
     }
     if (loaded > 0) {
         Sebastian.say(loaded)
